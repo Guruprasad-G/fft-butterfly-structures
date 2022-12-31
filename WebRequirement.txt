@@ -1,0 +1,23 @@
+To Implement
+
+1) New User enters the webpage:- A welocme message pop up with what this website is about?
+2) Default entered screen :- DFT calculation webpage
+3) Nav Bar with WebsiteName and/or Logo, DFT page link, About us page
+4) About us page contains, Cards with Pic and details + Unique visitors count
+5) DFT page contains - First card having what the user intends to calculate, i.e DFT or FFT and how many point DFT,
+in what methond...
+Second card containing Input fields along with option to give imaginary input
+Validate if the inuts and the method tie in together. Say if the user gives imaginary input to calculate DFT,
+it should throw an error reflected as a popup
+Third card displays the Butterfly structure.
+6) Advertisements present only in DFT page. Side Adverts and a bottom pop and close advert.
+
+Progress :-
+Day 1
+1) Translated code from Python to JS
+2) Renderd a Nav Menu
+3) Tested IDFT using DIT method. Got results similar to Python script, except two values were interchanged.
+The last few values had a significant deviation from actual answer back in the python script. I think similar error is 
+there in JS output too. (Need to figure out how to solve this, Why such an error is occuring !!)
+4) Created a Form for user Input -- Needs Improv
+5) Installed react-d3-graph library using which we can render the butterfly structures
