@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@mui/material": "^5.11.2",
+    "react-d3-graph": "^2.6.0"
+  }
+}
