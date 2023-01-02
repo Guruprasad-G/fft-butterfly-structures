@@ -1,13 +1,12 @@
-import { Point8DIFFFTorDITIFFT, Point8DITFFTorDIFIFFT } from "./Calculation";
-import { Graph } from "react-d3-graph";
 import { Card, Container } from "@mui/material";
 import { useState } from "react";
-import { boolean, complex, leftShift } from 'mathjs'
+import { boolean, complex, leftShift } from 'mathjs';
+import {Butterfly, Point8DIFFFTorDITIFFT, Point8DITFFTorDIFIFFT} from "./ButterflyStructure";
 
 const MainPage = () => {
     const details = {transform : true, type: true}
     const [input,updateinput] = useState(details)
-    const [output,updateoutput] = useState([])
+    const [output,updateoutput] = useState(null)
 
     const onChange = (event) => {
         console.log("event -",event)
@@ -39,7 +38,7 @@ const MainPage = () => {
                 <label>Using DIT or DIF</label>
                 <input type="radio" value="true" placeholder="DIT" name="type" onClick={onChange}></input>
                 <input type="radio" value="false" placeholder="DIF" name="type" onClick={onChange}></input>
-                <br></br>
+                {/* <br></br>
                 <label>x(0)</label> <input type="number"></input> <button>i</button>
                 <label>x(1)</label> <input type="number"></input> <button>i</button>
                 <label>x(2)</label> <input type="number"></input> <button>i</button>
@@ -47,18 +46,19 @@ const MainPage = () => {
                 <label>x(4)</label> <input type="number"></input> <button>i</button>
                 <label>x(5)</label> <input type="number"></input> <button>i</button>
                 <label>x(6)</label> <input type="number"></input> <button>i</button>
-                <label>x(7)</label> <input type="number"></input> <button>i</button>
+                <label>x(7)</label> <input type="number"></input> <button>i</button> */}
                 <br></br>
                 <button type="submit">Submit</button>
             </form>
             <br></br>
             <button onClick={onSubmit}>Click Me</button>
             <p>Output = </p>
-            {output.map((value) => {
+            {/* {output.map((value) => {
                 return (
                     <span>{value}</span>
                 )
-            })}
+            })} */}
+            <Butterfly val={output}></Butterfly>
         </>
     )
 }
