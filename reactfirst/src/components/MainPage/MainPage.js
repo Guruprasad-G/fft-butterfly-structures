@@ -1,7 +1,6 @@
-import { Card, Container } from "@mui/material";
 import { useState } from "react";
-import { boolean, complex, leftShift } from 'mathjs';
-import {Butterfly, Point8DIFFFTorDITIFFT, Point8DITFFTorDIFIFFT} from "./ButterflyStructure";
+import {Butterfly} from "./ButterflyStructure";
+import { Point8DIFFFTorDITIFFT, Point8DITFFTorDIFIFFT } from './EightPoint'
 
 const MainPage = () => {
     const details = {transform : true, type: true}
@@ -21,10 +20,15 @@ const MainPage = () => {
 
     const onSubmit = (event) => {
         // event.preventDefault();
-        const x = [36,complex(-4,9.7),complex(-4,4),complex(-4,7.7),-4,complex(-4,-7.7),complex(-4,-4),complex(-4,-9.7)]
+        // const x = [36,complex(-4,9.7),complex(-4,4),complex(-4,7.7),-4,complex(-4,-7.7),complex(-4,-4),complex(-4,-9.7)]
+        // console.log("Input given ->",x)
+        // let output = Point8DIFFFTorDITIFFT(x,1)
+        // console.log("Output == ", output)
+        // updateoutput(output)
+        const x = [1,1,0,0,-1,1,0,0]
         console.log("Input given ->",x)
-        let output = Point8DIFFFTorDITIFFT(x,1)
-        console.log("Output == ", output)
+        let output = Point8DITFFTorDIFIFFT(x,1)
+        console.log("Output == ",output)
         updateoutput(output)
     }
 
