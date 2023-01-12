@@ -1,33 +1,43 @@
-import {complex, conj, add, multiply, subtract, sqrt} from 'mathjs'
+import {complex, conj, add, multiply, subtract, sqrt, round} from 'mathjs'
 import { Graph } from "react-d3-graph";
 
-const Butterflyrender = (inputArray,yoffset,xoffset,name) => {
+const Butterflyrender = (inputArray,yoffset,xoffset,next,name) => {
     const output = []
     const half = inputArray.length/2;
     const nodes = []
     const links = []
+    var nextin = next
+    var nextout = next
+    const inname = "i"+name
+    const outname = "o"+name
     for(let i=0;i<inputArray.length;i++)
     {
-        nodes.push({id: name+" "+String(inputArray[i]), x: xoffset*100, y: (yoffset+i+1)*100})
-        console.log("Inp-",name+" "+String(inputArray[i]),"-x-",xoffset*100,"-y-",(yoffset+i+1)*100)
+        nodes.push({id: inname+String(nextin), x: xoffset*100, y: (yoffset+i+1)*100, val:String(inputArray[i])}) // Pushing the input node
+        console.log("Inp-",inname+String(nextin),"-x-",xoffset*100,"-y-",(yoffset+i+1)*100)
         if(i<half)
         {
-            output[i] = add(inputArray[i],inputArray[half+i])
-            nodes.push({id: name+" "+String(output[i]), x: (xoffset+1)*100, y: (yoffset+i+1)*100})
-            console.log("Op1-",name+" "+String(output[i]),"-x- ",(xoffset+1)*100,"-y- ",(yoffset+i+1)*100)
-            links.push({source: name+" "+String(inputArray[i]), target: name+" "+String(output[i])})
-            links.push({source: name+" "+String(inputArray[half+i]), target: name+" "+String(output[i])})
+            output[i] = round(add(inputArray[i],inputArray[half+i]),2)
+            nodes.push({id: outname+String(nextout), x: (xoffset+1)*100, y: (yoffset+i+1)*100, val:String(output[i])}) // Pushing the first half of output nodes
+            console.log("Op1-",outname+String(nextout),"-x- ",(xoffset+1)*100,"-y- ",(yoffset+i+1)*100)
+            links.push({source: inname+String(nextin), target: outname+String(nextout)})
+            links.push({source: inname+String(nextin+half), target: outname+String(nextout)})
+            nextout++
         }
         else
         {
-            output[i] = subtract(inputArray[i-half],inputArray[i])
-            nodes.push({id: name+" "+String(output[i]), x: (xoffset+1)*100, y: (yoffset+i+1)*100})
-            console.log("Op2-",name+" "+String(output[i]),"-x- ",(xoffset+1)*100,"-y- ",(yoffset+i+1)*100)
-            links.push({source: name+" "+String(inputArray[i-half]), target: name+" "+String(output[i])})
-            links.push({source: name+" "+String(inputArray[i]), target: name+" "+String(output[i])})
+            output[i] = round(subtract(inputArray[i-half],inputArray[i]),2)
+            nodes.push({id: outname+String(nextout), x: (xoffset+1)*100, y: (yoffset+i+1)*100, val:String(output[i])}) // Pushing the first half of output nodes
+            console.log("Op2-",outname+String(nextout),"-x- ",(xoffset+1)*100,"-y- ",(yoffset+i+1)*100)
+            links.push({source: inname+String(nextin-half), target: outname+String(nextout)})
+            links.push({source: inname+String(nextin), target: outname+String(nextout)})
+            nextout++
         }
+        nextin++
     }
     // console.log("Output -> ",output)
+    console.log("At the end of a butterfly stage -")
+    console.log(nodes)
+    console.log(links)
     return {output:output,nodes:nodes,links:links}
 }
 
@@ -43,7 +53,7 @@ const Point8DIFFFTorDITIFFT = (x,num) => {
     else
         console.error("Invalid twiddle choice :",num,"(Twiddle choice should be either true or false. True => Twiddle, False => Twiddle Conjugate)")
     
-    const first_stage_output = Butterflyrender(x,1,1,"Stage 1")
+    const first_stage_output = Butterflyrender(x,1,1,0,"1")
     console.log("First stage output =",first_stage_output.output)
     // console.log("First stage nodes ->",first_stage_output.nodes)
 
@@ -51,8 +61,8 @@ const Point8DIFFFTorDITIFFT = (x,num) => {
         multiply(first_stage_output.output[4],w[0]),multiply(first_stage_output.output[5],w[1]),multiply(first_stage_output.output[6],w[2]),multiply(first_stage_output.output[7],w[3])]
     console.log("Second stage input =",second_stage_input)
     
-    const second_stage_output_a = Butterflyrender([second_stage_input[0],second_stage_input[1],second_stage_input[2],second_stage_input[3]],1,3,"Stage 2a")
-    const second_stage_output_b = Butterflyrender([second_stage_input[4],second_stage_input[5],second_stage_input[6],second_stage_input[7]],5,3,"Stage 2b")
+    const second_stage_output_a = Butterflyrender([second_stage_input[0],second_stage_input[1],second_stage_input[2],second_stage_input[3]],1,3,0,"2")
+    const second_stage_output_b = Butterflyrender([second_stage_input[4],second_stage_input[5],second_stage_input[6],second_stage_input[7]],5,3,4,"2")
     const second_stage_output = {output: [...second_stage_output_a.output, ...second_stage_output_b.output], nodes : [...second_stage_output_a.nodes, ...second_stage_output_b.nodes], links: [...second_stage_output_a.links, ...second_stage_output_b.links]}
     // console.log("Second stage output =",second_stage_output.output)
     // console.log("Second stage nodes ->",second_stage_output.nodes)
@@ -61,10 +71,10 @@ const Point8DIFFFTorDITIFFT = (x,num) => {
         second_stage_output.output[4],second_stage_output.output[5],multiply(second_stage_output.output[6],w[0]),multiply(second_stage_output.output[7],w[2])]
     console.log("Third stage input =",third_stage_input)
 
-    const third_stage_output_a = Butterflyrender([third_stage_input[0],third_stage_input[1]],1,5,"Stage 3a")
-    const third_stage_output_b = Butterflyrender([third_stage_input[2],third_stage_input[3]],3,5,"Stage 3b")
-    const third_stage_output_c = Butterflyrender([third_stage_input[4],third_stage_input[5]],5,5,"Stage 3c")
-    const third_stage_output_d = Butterflyrender([third_stage_input[6],third_stage_input[7]],7,5,"Stage 3d")
+    const third_stage_output_a = Butterflyrender([third_stage_input[0],third_stage_input[1]],1,5,0,"3")
+    const third_stage_output_b = Butterflyrender([third_stage_input[2],third_stage_input[3]],3,5,2,"3")
+    const third_stage_output_c = Butterflyrender([third_stage_input[4],third_stage_input[5]],5,5,4,"3")
+    const third_stage_output_d = Butterflyrender([third_stage_input[6],third_stage_input[7]],7,5,6,"3")
 
     const third_stage_output = {
         output : [...third_stage_output_a.output,...third_stage_output_b.output,...third_stage_output_c.output,...third_stage_output_d.output],
@@ -179,7 +189,8 @@ const Butterfly = ({val}) => {
             "highlightFontWeight": "normal",
             "highlightStrokeColor": "SAME",
             "highlightStrokeWidth": "SAME",
-            "labelProperty": "id",
+            "labelProperty": "val",
+            "labelPosition" : "top",
             "mouseCursor": "pointer",
             "opacity": 1,
             "renderLabel": true,
