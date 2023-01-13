@@ -1,44 +1,5 @@
 import {complex, conj, multiply, sqrt, divide} from 'mathjs'
-import { Butterflyrender } from './Butterfly';
-
-const Point8nodeconnector = (points,inputArray,outputArray,inputXoffset,outputXoffset) => {
-    const nodes = []
-    const links = []
-    // Generating 0th input nodes and connection betweem input nodes and 1s stage input
-    for(let i=0;i<inputArray.length;i++)
-    {
-        nodes.push({id : "i0"+String(i), x: inputXoffset*100, y: (i+2)*100, val:String(inputArray[i])})
-        links.push({source: "i0"+String(i), target: "i1"+String(i)})
-    }
-
-    for(let j=1;j<sqrt(points)-1;j++)
-    {
-        for(let i=0;i<inputArray.length;i++)
-        {
-            links.push({source: "o"+String(j)+String(i), target: "i"+String(j+1)+String(i)})
-        }
-    }
-    // // Generating connection between 1st stage output and 2nd stage input
-    // for(let i=0;i<inputArray.length;i++)
-    // {
-    //     links.push({source: "o1"+String(i), target: "i2"+String(i)})
-    // }
-    // // Generating connection between 2st stage output and 3rd stage input
-    // for(let i=0;i<inputArray.length;i++)
-    // {
-    //     links.push({source: "o2"+String(i), target: "i3"+String(i)})
-    // }
-    //Generating final output node and connection between 3rd stage output and final output
-    for(let i=0;i<inputArray.length;i++)
-    {
-        nodes.push({id : "o0"+String(i), x: outputXoffset*100, y: (i+2)*100, val:String(outputArray[i])})
-        links.push({source: "i"+String(sqrt(points))+String(i), target: "o0"+String(i)})
-    }
-    // console.log("At the end of a other connections -")
-    // console.log(nodes)
-    // console.log(links)
-    return {nodes:nodes,links:links}
-}
+import { Butterflyrender, Additionalnodeconnector } from './Butteflyrender';
 
 const Point8DIFFFTorDITIFFT = (x,num) => {
 
@@ -91,7 +52,7 @@ const Point8DIFFFTorDITIFFT = (x,num) => {
     }
     // console.log("Y =",y)
     
-    const final_stage_additions = Point8nodeconnector(8,x,y,-1,7)
+    const final_stage_additions = Additionalnodeconnector(3,x,y,-1,7)
     // console.log("Output of connector func -",final_stage_additions)
     
     const nodes = [...first_stage_output.nodes, ...second_stage_output.nodes, ...third_stage_output.nodes, ...final_stage_additions.nodes]
@@ -115,7 +76,7 @@ const Point8DITFFTorDIFIFFT = (x,num) => {
         console.error("Invalid twiddle choice :",num,"(Twiddle choice should be either true or false. True => Twiddle, False => Twiddle Conjugate)")
     
     const first_stage_input = [x[0],x[4],x[2],x[6],x[1],x[5],x[3],x[7]]
-    // console.log("First stage input =",first_stage_input)
+    console.log("First stage input =",first_stage_input)
 
     const first_stage_output_a =  Butterflyrender(1,[first_stage_input[0],first_stage_input[1]],1,1,0)
     const first_stage_output_b =  Butterflyrender(1,[first_stage_input[2],first_stage_input[3]],1,3,2)
@@ -153,7 +114,7 @@ const Point8DITFFTorDIFIFFT = (x,num) => {
     }
     // console.log("Y =",y)
 
-    const final_stage_additions = Point8nodeconnector(8,first_stage_input,y,-1,7)
+    const final_stage_additions = Additionalnodeconnector(3,first_stage_input,y,-1,7)
     // console.log("Output of connector func -",final_stage_additions)
     
     const nodes = [...first_stage_output.nodes, ...second_stage_output.nodes, ...third_stage_output.nodes, ...final_stage_additions.nodes]
