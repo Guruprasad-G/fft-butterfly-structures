@@ -1,19 +1,8 @@
-import {complex, conj, multiply, sqrt, divide} from 'mathjs'
-import { Butterflyrender,Additionalnodeconnector } from './Butterfly';
+import { multiply, divide} from 'mathjs'
+import { Butterflyrender,Additionalnodeconnector } from './Butteflyrender';
 
-const Point4DIFFFTorDITIFFT = (x,num) => {
-    
-    const twiddle = [1,multiply(complex(1,-1),(1/sqrt(2))),complex(0,-1),multiply(complex(-1,-1),(1/sqrt(2)))]
-    const twiddle_conjugate = [twiddle[0],conj(twiddle[1]),conj([twiddle[2]]),conj([twiddle[3]])]
-    
-    let w = []
-    if(num)
-        w = twiddle_conjugate
-    else if(!num)
-        w = twiddle
-    else
-        console.error("Invalid twiddle choice :",num,"(Twiddle choice should be either true or false. True => Twiddle, False => Twiddle Conjugate)")
-    
+const Point4DIFFFTorDITIFFT = (x,w,num) => {
+
     const first_stage_output = Butterflyrender(1,x,1,1,0)
     // console.log("First stage output =",first_stage_output.output)
 
@@ -45,19 +34,8 @@ const Point4DIFFFTorDITIFFT = (x,num) => {
     return {nodes:nodes, links:links}
 }
 
-const Point4DITFFTorDIFIFFT = (x,num) => {
+const Point4DITFFTorDIFIFFT = (x,w,num) => {
 
-    const twiddle = [1,multiply(complex(1,-1),(1/sqrt(2))),complex(0,-1),multiply(complex(-1,-1),(1/sqrt(2)))]
-    const twiddle_conjugate = [twiddle[0],conj(twiddle[1]),conj(twiddle[2]),conj(twiddle[3])]
-
-    let w = []
-    if(num)
-        w = twiddle_conjugate
-    else if(!num)
-        w = twiddle
-    else
-        console.error("Invalid twiddle choice :",num,"(Twiddle choice should be either true or false. True => Twiddle, False => Twiddle Conjugate)")
-    
     const first_stage_input = [x[0],x[2],x[1],x[3]]
     console.log("First stage input =",first_stage_input)
 

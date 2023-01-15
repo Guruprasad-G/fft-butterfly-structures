@@ -1,51 +1,12 @@
 import { Graph } from "react-d3-graph";
-import {complex, conj, add, multiply, subtract, im, re, sqrt} from 'mathjs'
 
-const Stage1 = (n,x1,x2) => {
-    const outputarr = []
-    const y1 = add(x1,x2)
-    const y2 = subtract(x1,x2)
-    const nodes = []
-    nodes.push({id: String(x1)})
-    nodes.push({id: String(x2)})
-    nodes.push({id: String(y1)})
-    nodes.push({id: String(y2)})
-    const links = []
-    links.push({source : String(x1), target: String(y1)})
-    links.push({source : String(x1), target: String(y2)})
-    links.push({source : String(x2), target: String(y1)})
-    links.push({source : String(x2), target: String(y2)})
-    return {nodes:nodes,links:links}
-}
 
-const Butterflyrender = (inputArray,xoffset,yoffset) => {
-    const output = []
-    const half = inputArray.length/2;
-    const nodes = []
-    const links = []
-    for(let i=0;i<inputArray.length;i++)
+const Butterfly = ({val}) => {
+    console.log("Val ->",val)
+    if(!val)
     {
-        nodes.push({id: inputArray[i], x: xoffset*i*100, y: yoffset*100})
-        if(i<half)
-        {
-            output[i] = add(inputArray[i],inputArray[half+i])
-            nodes.push({id: output[i], x: xoffset*i*100, y:(yoffset+1)*100})
-            links.push({source: inputArray[i], target: output[i]})
-            links.push({source: inputArray[half+i], target: output[i]})
-        }
-        else
-        {
-            output[i] = subtract(inputArray[i-half],inputArray[i])
-            nodes.push({id: output[i], x: xoffset*i*100, y:(yoffset+1)*100})
-            links.push({source: inputArray[i-half], target: output[i]})
-            links.push({source: inputArray[i], target: output[i]})
-        }
+        return null;
     }
-    console.log("Output -> ",output)
-    return output
-}
-
-const Butterfly = () => {
     const myConfig = {
         "automaticRearrangeAfterDropNode": false,
         "collapsible": false,
@@ -72,8 +33,8 @@ const Butterfly = () => {
             "disableLinkForce": false
         },
         "node": {
-            "color": "green",
-            "fontColor": "pink",
+            "color": "red",
+            "fontColor": "black",
             "fontSize": 14,
             "fontWeight": "normal",
             "highlightColor": "SAME",
@@ -81,7 +42,8 @@ const Butterfly = () => {
             "highlightFontWeight": "normal",
             "highlightStrokeColor": "SAME",
             "highlightStrokeWidth": "SAME",
-            "labelProperty": "id",
+            "labelProperty": "val",
+            "labelPosition" : "top",
             "mouseCursor": "pointer",
             "opacity": 1,
             "renderLabel": true,
@@ -92,7 +54,7 @@ const Butterfly = () => {
             "symbolType": "circle"
         },
         "link": {
-            "color": "red",
+            "color": "black",
             "fontColor": "yellow",
             "fontSize": 8,
             "fontWeight": "normal",
@@ -112,20 +74,8 @@ const Butterfly = () => {
             "strokeLinecap": "butt"
         }
     }
-    const data = {
-        nodes : [
-            {id: "node1", x : -100, y : 100}, {id: "node2", x : 100, y : 100}, 
-            {id: "node3", x : 100, y : -100}, {id: "node4", x : -100, y : -100},
-            {id: "node5", x : -100, y : 100}, {id: "node6", x : 100, y : 100}, 
-            {id: "node7", x : 100, y : -100}, {id: "node8", x : -100, y : -100},
-        ],
-        links : [
-            {source : "node1", target : "node3"},
-            {source : "node1", target : "node2"},
-            {source : "node4", target : "node2"},
-            {source : "node4", target : "node3"}
-        ]
-    }
+    const {nodes,links} = val
+    const data = {nodes : [...nodes], links : [...links]}
     return (
         <Graph
             id="graph-id"
@@ -135,4 +85,5 @@ const Butterfly = () => {
     )
 }
 
-export {Butterfly, Butterflyrender}
+export { Butterfly }
+
