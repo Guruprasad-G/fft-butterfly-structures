@@ -1,89 +1,237 @@
-import { useState } from "react";
-import {Butterfly} from "./Butterfly";
+import { useState,useEffect } from "react";
+import { Butterfly } from '../MainPage/Butterfly'
 import { Point8DIFFFTorDITIFFT, Point8DITFFTorDIFIFFT } from './EightPoint'
-import { Point4DIFFFTorDITIFFT, Point4DITFFTorDIFIFFT } from "./FourPoint";
-import {complex, conj, multiply, sqrt} from 'mathjs'
-import { Container } from "@mui/system";
+import { Point4DIFFFTorDITIFFT, Point4DITFFTorDIFIFFT } from './FourPoint'
+import { complex, conj, multiply, sqrt } from 'mathjs'
+import { Alert, AlertTitle, Button, Card, Container, CardMedia, Grid, Paper, useMediaQuery, experimentalStyled as styled } from '@mui/material'
 
-const MainPage = () => {
-    const details = {transform : true, type: true}
-    const [input,updateinput] = useState(details)
-    const [output,updateoutput] = useState(null)
+const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(2),
+    textAlign: 'center',
+}));
 
-    const onChange = (event) => {
-        console.log("event -",event)
-        console.log("event.target -",event.target)
-        console.log("event.target.value -",event.target.value)
-        let value = true
-        if(event.target.value === "false")
-            value = false
-        updateinput({...input, [event.target.name]: value})
-        console.log("State value -",input)
-    }
-
-    const onSubmit = (event) => {
-        // event.preventDefault();
-        // const x = [36,complex(-4,9.7),complex(-4,4),complex(-4,7.7),-4,complex(-4,-7.7),complex(-4,-4),complex(-4,-9.7)]
-        // console.log("Input given ->",x)
-        // let output = Point8DIFFFTorDITIFFT(x,1)
-        // console.log("Output == ", output)
-        // updateoutput(output)
-        const num = 0
-        const twiddle = [1,multiply(complex(1,-1),(1/sqrt(2))),complex(0,-1),multiply(complex(-1,-1),(1/sqrt(2)))]
-        const twiddle_conjugate = [twiddle[0],conj(twiddle[1]),conj([twiddle[2]]),conj([twiddle[3]])]
-        
-        let w = []
-        if(num)
-            w = twiddle_conjugate
-        else if(!num)
-            w = twiddle
-        else
-            console.error("Invalid twiddle choice :",num,"(Twiddle choice should be either true or false. True => Twiddle, False => Twiddle Conjugate)")
-        
-        const x = [1,1,0,0,-1,1,0,0]
-        console.log("Input given ->",x)
-        let output = Point8DITFFTorDIFIFFT(x,w,num)
-        console.log("Output == ",output)
-        updateoutput(output)
-    }
-
+const Userinputform1 = ({ onChange }) => {
     return (
         <>
-            <Container overflow="auto" margintop="50%">
-                <form>
-                    <label>DFT or IDFT</label>
-                    <input type="radio" value="true" placeholder="DFT" name="transform" onClick={onChange}></input>
-                    <input type="radio" value="false" placeholder="IDFT" name="transform" onClick={onChange}></input>
-                    <br></br>
-                    <label>Using DIT or DIF</label>
-                    <input type="radio" value="true" placeholder="DIT" name="type" onClick={onChange}></input>
-                    <input type="radio" value="false" placeholder="DIF" name="type" onClick={onChange}></input>
-                    <br></br>
-                    <label>x(0)</label> <input type="number"></input> <button>i</button>
-                    <label>x(1)</label> <input type="number"></input> <button>i</button>
-                    <label>x(2)</label> <input type="number"></input> <button>i</button>
-                    <label>x(3)</label> <input type="number"></input> <button>i</button>
-                    <label>x(4)</label> <input type="number"></input> <button>i</button>
-                    <label>x(5)</label> <input type="number"></input> <button>i</button>
-                    <label>x(6)</label> <input type="number"></input> <button>i</button>
-                    <label>x(7)</label> <input type="number"></input> <button>i</button>
-                    <br></br>
-                    <button type="submit">Submit</button>
-                </form>
-                <br></br>
-                <button onClick={onSubmit}>Click Me</button>
-                <p>Output = </p>
-            </Container>
-            {/* {output.map((value) => {
-                return (
-                    <span>{value}</span>
-                )
-            })} */}
-            <Butterfly val={output}></Butterfly>
+            <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
+                <Grid item xs={2} sm={4} md={4}>
+                    <Item><label>Number of Input</label>
+                        <label> 4</label>
+                        <input type="radio" value="4" placeholder="DFT" name="points" onClick={onChange}></input>
+                        <label>8</label>
+                        <input type="radio" value="8" placeholder="IDFT" name="points" onClick={onChange}></input></Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={4}>
+                    <Item><label>FFT or IFFT</label>
+                        <input type="radio" value="true" placeholder="DFT" name="transform" onClick={onChange}></input>
+                        <input type="radio" value="false" placeholder="IDFT" name="transform" onClick={onChange}></input></Item>
+                </Grid>
+                <Grid item xs={2} sm={4} md={4}>
+                    <Item><label>Using DIT or DIF</label>
+                        <input type="radio" value="true" placeholder="DIT" name="type" onClick={onChange}></input>
+                        <input type="radio" value="false" placeholder="DIF" name="type" onClick={onChange}></input></Item>
+                </Grid>
+            </Grid>
         </>
     )
 }
 
+const Advertisement = ({height, width}) => {
+    return (
+        <Container style={{height:height, width:width, padding:"0"}} >
+                    <CardMedia style={{ height: "100%", width: "100%", padding: "0" }} component="iframe" src="https://www.youtube.com/embed/ziQ9GURNrUg/">
+                    </CardMedia>
+                </Container>
+    )
+}
+
+const Userinputform2 = ({points, onChange, field1}) => {
+    return (
+        <>
+        {
+            points ? points.map((numobject) => {
+                return (
+                    <Grid container style={{ alignItems: "center", justifyContent: "center" }}>
+                        <Grid item xs="auto" md="auto">
+                            <br></br>
+                            <label>x({numobject.index}) = </label>
+                            <input type="number" name="realinput" defaultValue={0} onChange={onChange} id={numobject.index}></input>
+                            {field1.transform ? null : <>+<input type="number" name="imginput" defaultValue={0} onChange={onChange} id={numobject.index}></input><button disabled style={{ color: "black" }}>i</button></>}
+                        </Grid>
+                    </Grid>
+                )
+            }) : null
+        }
+        </>
+    )
+}
+
+const Submission = ({onSubmit, errors}) => {
+    return (
+        <>
+        <br></br>
+        {errors ? <Alert severity="error">
+                        <AlertTitle>{errors}</AlertTitle>
+                    </Alert> : null}
+        <Button onClick={onSubmit} style={{ align: "center", marginTop:"5%", alignItems: 'center', justifyContent: 'center' }} variant="contained">Submit</Button>
+        </>
+    )
+}
+
+const MainPage = () => {
+    const [field1, updatefield1] = useState({ transform: null, type: null })
+    const [realinput, updaterealinput] = useState([])
+    const [imginput, updateimginput] = useState([])
+    const [points, updatepoints] = useState([])
+    const [errors, updateerrors] = useState(null)
+    const [output, updateoutput] = useState(null)
+    const screenWidth = useMediaQuery('(min-width:600px)');
+
+    // useEffect(() => {
+    //     console.log("Field1 -", field1)
+    //     console.log("realinput -", realinput)
+    //     console.log("imginput -", imginput)
+    //     console.log("Points -", points)
+    //     console.log("Error -", errors)
+    // }, [field1, realinput, imginput, points, errors])
+
+    const onChange = (event) => {
+        // console.log("event -",event)
+        // console.log("event.target -",event.target)
+        // console.log("event.target.name -",event.target.name)
+        // console.log("event.target.value -",event.target.value)
+        // console.log("event.target.name -",event.target.name)
+        // console.log("event.target.index -",event.target.index)
+        // console.log("event.target.id -",event.target.id)
+        if (event.target.name === "transform" || event.target.name === "type") {
+            let value = true
+            if (event.target.value === "false")
+                value = false
+            updatefield1({ ...field1, [event.target.name]: value })
+        }
+        else if (event.target.name === "realinput") {
+            let rarr = realinput
+            rarr[event.target.id] = Number(event.target.value)
+            updaterealinput(rarr)
+            // console.log("Real array -",realinput)
+        }
+        else if (event.target.name === "imginput") {
+            let iarr = imginput
+            iarr[event.target.id] = Number(event.target.value)
+            updateimginput(iarr)
+            // console.log("Imaginary array -",imginput)
+        }
+        else if (event.target.name === "points") {
+            const numberofinputs = Number(event.target.value)
+            const inputarray = []
+            const temparrayreal = []
+            const temparrayimg = []
+            for (var i = 0; i < numberofinputs; i++) {
+                inputarray.push({ i: 0, index: i })
+                temparrayreal.push(0)
+                temparrayimg.push(0)
+            }
+            updatepoints(inputarray)
+            updaterealinput(temparrayreal)
+            updateimginput(temparrayimg)
+        }
+    }
+
+    const onSubmit = (event) => {
+        // event.preventDefault();
+        if (!(points.length > 0)) {
+            updateerrors("Select number of points")
+            return;
+        }
+        if (field1.transform === null) {
+            updateerrors("Select a transform")
+            return;
+        }
+        if (field1.type === null) {
+            updateerrors("Select a type")
+            return;
+        }
+        if (!(realinput.length > 1)) {
+            updateerrors("Enter a valid input");
+            return;
+        }
+        updateerrors(null);
+        const calcarray = []
+        for (let i = 0; i < points.length; i++) {
+            calcarray.push(complex(realinput[i], imginput[i]))
+        }
+        // console.log("Calc array -", calcarray)
+        const twiddle = [1, multiply(complex(1, -1), (1 / sqrt(2))), complex(0, -1), multiply(complex(-1, -1), (1 / sqrt(2)))]
+        const twiddle_conjugate = [twiddle[0], conj(twiddle[1]), conj([twiddle[2]]), conj([twiddle[3]])]
+
+        let w = []
+        if (field1.transform)
+            w = twiddle_conjugate
+        else
+            w = twiddle
+        const x = calcarray
+        // console.log("Input given ->", x)
+        // console.log("points given ->",points.length)
+        if (points.length === 8) {
+            // console.log("8 Points")
+            var output = field1.type ? Point8DITFFTorDIFIFFT(x, w, field1.transform) : Point8DIFFFTorDITIFFT(x, w, field1.transform)
+        }
+        else
+            output = field1.type ? Point4DITFFTorDIFIFFT(x, w, field1.transform) : Point4DIFFFTorDITIFFT(x, w, field1.transform)
+        // console.log("Output == ", output)
+        updateoutput(output)
+    }
+    if(screenWidth)
+    return (
+        <>
+            <Container style={{ display: "flex", marginTop: "5%", padding: "2% 0% 2%" }}>
+                <Advertisement height="600px" width="20%"></Advertisement>
+                <Container style={{ height: "100%", width: "60%", sx: "auto", md: "auto" }}>
+                    <Card style={{ height: "50%", marginTop: "2%", paddingTop: "2%", sx: "auto", md: "auto" }}>
+                        <Userinputform1 onChange={onChange}></Userinputform1>
+                        <Item>
+                            <Userinputform2 points={points} onChange={onChange} field1={field1}></Userinputform2>
+                            <Submission onSubmit={onSubmit} errors={errors}></Submission>
+                        </Item>
+                    </Card>
+                    <br></br>
+                    <Card style={{ height: "100%", width:"100%",alignItems: "center", justifyContent: "center" }}>
+                        <Container style={{ height:"100%", width:"100%"}}>
+                            <Butterfly val={output}></Butterfly>
+                        </Container>
+                    </Card>
+                </Container>
+                <Advertisement height="600px" width="20%"></Advertisement>
+            </Container>
+        </>
+    )
+    else
+        return (
+            <>
+                <Container style={{ display: "flex", marginTop: "18%", padding: "2% 0% 2%" }}>
+                    <Advertisement height="250px" width="250px"></Advertisement>
+                </Container>
+                <Container style={{ height: "100%", width: "100%", sx: "auto", md: "auto" }}>
+                    <Card style={{ height: "100%", marginTop: "2%", paddingTop: "2%", sx: "auto", md: "auto" }}>
+                        <Userinputform1 onChange={onChange}></Userinputform1>
+                    </Card>
+                    <Item>
+                        <Userinputform2 points={points} onChange={onChange} field1={field1}></Userinputform2>
+                        <Submission onSubmit={onSubmit} errors={errors}></Submission>
+                    </Item>
+                </Container>
+                <br></br>
+                <Advertisement height="250px" width="250px"></Advertisement>
+                <br></br>
+                    <Card style={{ height: "300px", width:"100%",alignItems: "center", justifyContent: "center"}}>
+                        <Container style={{ height:"100%", width:"100%", align:"center"}}>
+                            <Butterfly val={output}></Butterfly>
+                        </Container>
+                    </Card>
+            </>
+        )
+}
+
 export default MainPage
-
-

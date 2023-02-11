@@ -1,8 +1,7 @@
 import { Graph } from "react-d3-graph";
 
-
 const Butterfly = ({val}) => {
-    console.log("Val ->",val)
+    // console.log("Val ->",val)
     if(!val)
     {
         return null;
@@ -14,7 +13,7 @@ const Butterfly = ({val}) => {
         "focusAnimationDuration": 0.75,
         "focusZoom": 1,
         "freezeAllDragEvents": false,
-        "height": 400,
+        "height": 600,
         "highlightDegree": 1,
         "highlightOpacity": 1,
         "linkHighlightBehavior": false,
@@ -24,7 +23,7 @@ const Butterfly = ({val}) => {
         "panAndZoom": true,
         "staticGraph": true,
         "staticGraphWithDragAndDrop": false,
-        "width": 800,
+        "width": 600,
         "d3": {
             "alphaTarget": 0.05,
             "gravity": -100,
@@ -77,11 +76,7 @@ const Butterfly = ({val}) => {
     const {nodes,links} = val
     const data = {nodes : [...nodes], links : [...links]}
     return (
-        <Graph
-            id="graph-id"
-            data = {data}
-            config = {myConfig}
-        />
+        <Graph id="graph-id" data = {data} config = {myConfig}/>
     )
 }
 

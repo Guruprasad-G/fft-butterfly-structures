@@ -1,11 +1,11 @@
 import { multiply, divide} from 'mathjs'
-import { Butterflyrender, Additionalnodeconnector } from './Butteflyrender';
+import { Butterflyrender, Additionalnodeconnector } from './Butteflyrender'
 
 const Point8DIFFFTorDITIFFT = (x,w,num) => {
 
     const first_stage_output = Butterflyrender(1,x,1,1,0)
     // console.log("First stage output =",first_stage_output.output)
-
+    
     const second_stage_input = [first_stage_output.output[0],first_stage_output.output[1],first_stage_output.output[2],first_stage_output.output[3],
         multiply(first_stage_output.output[4],w[0]),multiply(first_stage_output.output[5],w[1]),multiply(first_stage_output.output[6],w[2]),multiply(first_stage_output.output[7],w[3])]
     // console.log("Second stage input =",second_stage_input)
@@ -52,9 +52,9 @@ const Point8DIFFFTorDITIFFT = (x,w,num) => {
 }
 
 const Point8DITFFTorDIFIFFT = (x,w,num) => {
-
+    
     const first_stage_input = [x[0],x[4],x[2],x[6],x[1],x[5],x[3],x[7]]
-    console.log("First stage input =",first_stage_input)
+    // console.log("First stage input =",first_stage_input)
 
     const first_stage_output_a =  Butterflyrender(1,[first_stage_input[0],first_stage_input[1]],1,1,0)
     const first_stage_output_b =  Butterflyrender(1,[first_stage_input[2],first_stage_input[3]],1,3,2)

@@ -6,14 +6,8 @@ import { Container } from '@mui/system';
 function App() {
   return (
     <>
-      <Container>
-        <Container>
-          <NavBar></NavBar>
-        </Container>
-      <Container>
-        <MainPage></MainPage>
-      </Container>
-      </Container>
+      <NavBar></NavBar>
+      <MainPage  style={{margintop:"500px"}}></MainPage>
     </>
   );
 }
