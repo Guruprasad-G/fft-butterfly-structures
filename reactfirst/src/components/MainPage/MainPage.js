@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Butterfly } from '../MainPage/Butterfly'
+import { Butterfly } from './Butterfly'
 import { Point8DIFFFTorDITIFFT, Point8DITFFTorDIFIFFT } from './EightPoint'
 import { Point4DIFFFTorDITIFFT, Point4DITFFTorDIFIFFT } from './FourPoint'
 import { complex, conj, multiply, sqrt } from 'mathjs'
