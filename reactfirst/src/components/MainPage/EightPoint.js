@@ -1,8 +1,7 @@
 import { multiply, divide} from 'mathjs'
-import { Butterflyrender, Additionalnodeconnector } from '../MainPage/Butterflyrender';
+import { Butterflyrender, Additionalnodeconnector } from '../MainPage/Butteflyrender';
 
 const Point8DIFFFTorDITIFFT = (x,w,num) => {
-
     const first_stage_output = Butterflyrender(1,x,1,1,0)
     // console.log("First stage output =",first_stage_output.output)
     
