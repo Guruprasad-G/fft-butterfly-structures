@@ -1,9 +1,9 @@
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Butterfly } from '../MainPage/Butterfly'
 import { Point8DIFFFTorDITIFFT, Point8DITFFTorDIFIFFT } from './EightPoint'
 import { Point4DIFFFTorDITIFFT, Point4DITFFTorDIFIFFT } from './FourPoint'
 import { complex, conj, multiply, sqrt } from 'mathjs'
-import { Alert, AlertTitle, Button, Card, Container, CardMedia, Grid, Paper, useMediaQuery, experimentalStyled as styled } from '@mui/material'
+import { Alert, AlertTitle, Button, Card, CircularProgress, Container, CardMedia, Grid, Paper, useMediaQuery, experimentalStyled as styled } from '@mui/material'
 
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -14,36 +14,44 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Userinputform1 = ({ onChange }) => {
     return (
-        <>
+        <Container style={{color:"inherit"}}>
             <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid item xs={2} sm={4} md={4}>
-                    <Item><label>Number of Input</label>
-                        <label> 4</label>
-                        <input type="radio" value="4" placeholder="DFT" name="points" onClick={onChange}></input>
-                        <label>8</label>
-                        <input type="radio" value="8" placeholder="IDFT" name="points" onClick={onChange}></input></Item>
+                    {/* <Item> */}
+                        <label for="4points"> 4 point Input</label>
+                        <input type="radio" value="4" placeholder="DFT" name="points" onChange={onChange} id="4points"></input>
+                        <br></br>
+                        <label for="8points"> 8 point Input</label>
+                        <input type="radio" value="8" placeholder="IDFT" name="points" onChange={onChange} id="8points"></input>
+                        {/* </Item> */}
                 </Grid>
                 <Grid item xs={2} sm={4} md={4}>
-                    <Item><label>FFT or IFFT</label>
-                        <input type="radio" value="true" placeholder="DFT" name="transform" onClick={onChange}></input>
-                        <input type="radio" value="false" placeholder="IDFT" name="transform" onClick={onChange}></input></Item>
+                    {/* <Item> */}
+                        <label for="FFTtransform">FFT</label>
+                        <input type="radio" value="true" placeholder="DFT" name="transform" onChange={onChange} id="FFTtransform"></input>
+                        <label for="IFFTtransform">  IFFT</label>
+                        <input type="radio" value="false" placeholder="IDFT" name="transform" onChange={onChange} id="IFFTtransform"></input>
+                        {/* </Item> */}
                 </Grid>
                 <Grid item xs={2} sm={4} md={4}>
-                    <Item><label>Using DIT or DIF</label>
-                        <input type="radio" value="true" placeholder="DIT" name="type" onClick={onChange}></input>
-                        <input type="radio" value="false" placeholder="DIF" name="type" onClick={onChange}></input></Item>
+                    {/* <Item> */}
+                        <label>Using DIT or DIF</label>
+                        <input type="radio" value="true" placeholder="DIT" name="type" onChange={onChange}></input>
+                        <input type="radio" value="false" placeholder="DIF" name="type" onChange={onChange}></input>
+                        {/* </Item> */}
                 </Grid>
             </Grid>
-        </>
+        </Container>
     )
 }
 
 const Advertisement = ({height, width}) => {
+    const [loading, setLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
     return (
         <Container style={{height:height, width:width, padding:"0"}} >
-                    <CardMedia style={{ height: "100%", width: "100%", padding: "0" }} component="iframe" src="https://www.youtube.com/embed/ziQ9GURNrUg/">
-                    </CardMedia>
-                </Container>
+        { hasError ? <p>The iframe could not be loaded.</p> : loading ? <div style={{ alignItems: "center", justifyContent: "center" }}><CircularProgress></CircularProgress></div> : <CardMedia style={{ height: "100%", width: "100%", padding: "0" }} component="iframe" src="https://www.youtube.com/embed/ziQ9GURNrUg/" onError={(e) => {setHasError(true)}} onLoad={() => setLoading(false)}></CardMedia> }
+        </Container>
     )
 }
 
@@ -88,7 +96,12 @@ const MainPage = () => {
     const [errors, updateerrors] = useState(null)
     const [output, updateoutput] = useState(null)
     const screenWidth = useMediaQuery('(min-width:600px)');
-
+    const Errors = {
+        PointsError: "Select number of points",
+        TransformError: "Select a transform",
+        TypeError: "Select a type",
+        InputError: "Enter a valid input",
+    }
     // useEffect(() => {
     //     console.log("Field1 -", field1)
     //     console.log("realinput -", realinput)
@@ -140,21 +153,21 @@ const MainPage = () => {
     }
 
     const onSubmit = (event) => {
-        // event.preventDefault();
+        event.preventDefault();
         if (!(points.length > 0)) {
-            updateerrors("Select number of points")
+            updateerrors(Errors.PointsError)
             return;
         }
         if (field1.transform === null) {
-            updateerrors("Select a transform")
+            updateerrors(Errors.TransformError)
             return;
         }
         if (field1.type === null) {
-            updateerrors("Select a type")
+            updateerrors(Errors.TypeError)
             return;
         }
         if (!(realinput.length > 1)) {
-            updateerrors("Enter a valid input");
+            updateerrors(Errors.InputError);
             return;
         }
         updateerrors(null);

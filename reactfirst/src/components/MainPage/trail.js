@@ -1,40 +1,111 @@
-import { Container } from "@mui/system"
-import { Alert, AlertTitle, Button, Card, CardMedia, Grid, Paper } from '@mui/material'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-import useMediaQuery from '@mui/material/useMediaQuery';
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
-function SimpleMediaQuery() {
-  const matches = useMediaQuery('(min-width:600px)');
+const lightTheme = createTheme({
+    palette: {
+        mode: 'light',
+    },
+});
 
-  return <span>{`(min-width:600px) matches: ${matches}`}</span>;
+function ToggleColorMode() {
+    const [theme,switchtheme] = useState(lightTheme);
+    const onClick = () => {
+        if(theme === darkTheme)
+            switchtheme(lightTheme);
+        else
+            switchtheme(darkTheme);
+    }
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <main>This app is using the dark mode
+      <IconButton sx={{ ml: 1 }} onClick={onClick} color="inherit">
+        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+      </IconButton>
+      </main>
+    </ThemeProvider>
+  );
 }
 
-const Func = () => {
-    const screenWidth = useMediaQuery('(min-width:600px)');
-    if(screenWidth)
-        return (
-            <Container style={{display:"flex", marginTop: "10%", padding:"0"}}>
-                <Container style={{height:"600px", width:"20%", padding:"0"}}>
-                <CardMedia style={{height:"100%", width:"100%", padding:"0"}} component="iframe" src="https://www.youtube.com/embed/ziQ9GURNrUg/">
-            </CardMedia>
-                </Container>
-                <Container style={{height:"600px", width:"60%"}}>
-                <Card style={{height:"100%", width:"100%"}}>
-                        Hey there wdfeqwffffffffffqwfqwfqeefew
-                        <SimpleMediaQuery></SimpleMediaQuery>
-                        <input type="text"></input>
-                    </Card>
-                </Container>
-                <Container style={{height:"600px", width:"20%", padding:"0"}}>
-                <CardMedia style={{height:"100%", width:"100%", padding:"0"}} component="iframe" src="https://www.youtube.com/embed/ziQ9GURNrUg">
-            </CardMedia>
-                </Container>
-                </Container>
-        )
-    else
-        return null;
-}
-export default Func
+export default ToggleColorMode;
+
+
+
+
+
+// import * as React from 'react';
+// import IconButton from '@mui/material/IconButton';
+// import Box from '@mui/material/Box';
+// import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
+// import Brightness4Icon from '@mui/icons-material/Brightness4';
+// import Brightness7Icon from '@mui/icons-material/Brightness7';
+
+// const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+
+// function MyApp() {
+//   const theme = useTheme();
+//   const colorMode = React.useContext(ColorModeContext);
+//   return (
+//     <Box
+//       sx={{
+//         display: 'flex',
+//         width: '100%',
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//         bgcolor: 'background.default',
+//         color: 'text.primary',
+//         borderRadius: 1,
+//         p: 3,
+//       }}
+//     >
+//       {theme.palette.mode} mode
+//       <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+//         {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+//       </IconButton>
+//     </Box>
+//   );
+// }
+
+// export default function ToggleColorMode() {
+//   const [mode, setMode] = React.useState('light');
+//   const colorMode = React.useMemo(
+//     () => ({
+//       toggleColorMode: () => {
+//         setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+//       },
+//     }),
+//     [],
+//   );
+
+//   const theme = React.useMemo(
+//     () =>
+//       createTheme({
+//         palette: {
+//           mode,
+//         },
+//       }),
+//     [mode],
+//   );
+
+//   return (
+//     <ColorModeContext.Provider value={colorMode}>
+//       <ThemeProvider theme={theme}>
+//         <MyApp>
+//         </MyApp>
+//       </ThemeProvider>
+//     </ColorModeContext.Provider>
+//   );
+// }
 
 // Anything below 600 px is small screen and aobve will be large screen
 // Large Screen

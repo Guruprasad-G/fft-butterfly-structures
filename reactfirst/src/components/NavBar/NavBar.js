@@ -1,11 +1,16 @@
-import * as React from 'react';
-import {AppBar, Button, Box, Container, IconButton, Menu, MenuItem, Toolbar, Typography} from '@mui/material'
+import { useState } from 'react';
+import {AppBar, Button, Box, Container, CssBaseline, createTheme, IconButton, Menu, MenuItem, ThemeProvider, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-const pages = ['DFT','About Us'];
+const pages = [];
+const darkTheme = createTheme({ palette: { mode: 'dark'}});
+const lightTheme = createTheme({ palette: { mode: 'light'}});
 
 function NavBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [theme,switchtheme] = useState(lightTheme);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -16,12 +21,15 @@ function NavBar() {
   };
 
   return (
+    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
     <AppBar enableColorOnDark color='primary'>
       <Container maxWidth="s">
         <Toolbar disableGutters>
           <Typography variant="h6" noWrap component="a" href="/"
             sx={{ mr: 2, display: { xs: 'none', md: 'flex' }, fontFamily: 'monospace', fontWeight: 700, letterSpacing: '.3rem', color: 'inherit', textDecoration: 'none',}}>
-            WebPageName
+            Butterfly
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton size="large" aria-label="account of current user" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleOpenNavMenu} color="inherit">
@@ -49,9 +57,14 @@ function NavBar() {
               </Button>
             ))}
           </Box>
+          <IconButton sx={{ ml: 1 }} onClick={() => {theme === darkTheme ? switchtheme(lightTheme) : switchtheme(darkTheme)}} color="inherit">
+        {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+      </IconButton>
         </Toolbar>
       </Container>
     </AppBar>
+    </ThemeProvider>
+    </>
   );
 }
 export default NavBar;

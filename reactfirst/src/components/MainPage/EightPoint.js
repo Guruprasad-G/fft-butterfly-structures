@@ -1,5 +1,5 @@
 import { multiply, divide} from 'mathjs'
-import { Butterflyrender, Additionalnodeconnector } from './Butteflyrender'
+import { Butterflyrender, Additionalnodeconnector } from '../MainPage/Butterflyrender';
 
 const Point8DIFFFTorDITIFFT = (x,w,num) => {
 
