@@ -2,7 +2,7 @@
   "name": "reactfirst",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Guruprasad-G.github.io/Fast-Fourier-Transform-Using-Butterfly-Structures ",
+  "homepage": "https://Guruprasad-G.github.io/fft-butterfly-structures ",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
