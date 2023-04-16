@@ -4,13 +4,11 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import NavBar from '../src/components/NavBar/NavBar'
 import MainPage from '../src/components/MainPage/MainPage'
-import Func from './components/MainPage/trail';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <NavBar></NavBar>
-    {/* <Func></Func> */}
     <MainPage></MainPage>
   </React.StrictMode>
 );
