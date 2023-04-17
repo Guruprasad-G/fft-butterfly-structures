@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/fft-butterfly-structures%20/static/css/main.e6c13ad2.css",
-    "main.js": "/fft-butterfly-structures%20/static/js/main.dc4d77e4.js",
-    "static/js/787.27fb6eb7.chunk.js": "/fft-butterfly-structures%20/static/js/787.27fb6eb7.chunk.js",
-    "index.html": "/fft-butterfly-structures%20/index.html",
-    "main.e6c13ad2.css.map": "/fft-butterfly-structures%20/static/css/main.e6c13ad2.css.map",
-    "main.dc4d77e4.js.map": "/fft-butterfly-structures%20/static/js/main.dc4d77e4.js.map",
-    "787.27fb6eb7.chunk.js.map": "/fft-butterfly-structures%20/static/js/787.27fb6eb7.chunk.js.map"
+    "main.css": "/fft-butterfly-structures/static/css/main.e6c13ad2.css",
+    "main.js": "/fft-butterfly-structures/static/js/main.35b58eab.js",
+    "static/js/787.27fb6eb7.chunk.js": "/fft-butterfly-structures/static/js/787.27fb6eb7.chunk.js",
+    "index.html": "/fft-butterfly-structures/index.html",
+    "main.e6c13ad2.css.map": "/fft-butterfly-structures/static/css/main.e6c13ad2.css.map",
+    "main.35b58eab.js.map": "/fft-butterfly-structures/static/js/main.35b58eab.js.map",
+    "787.27fb6eb7.chunk.js.map": "/fft-butterfly-structures/static/js/787.27fb6eb7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.dc4d77e4.js"
+    "static/js/main.35b58eab.js"
   ]
 }
